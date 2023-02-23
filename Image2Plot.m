@@ -34,7 +34,7 @@ I = imread(Raw_File_and_Path);
 
 %% Convert to black and white and create black pixel mask
 BW = rgb2gray(I);
-BW = uint8(255 - double(BW));
+%BW = uint8(255 - double(BW)); <-- code for turning the image negative
 blackpixelsmask = BW<15;
 % Array for black pixels mask, where values will be 1 if the pixel is 
 % "black" (i.e. BW value is <15) and otherwise 0.
