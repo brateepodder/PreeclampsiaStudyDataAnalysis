@@ -90,6 +90,24 @@ xlabel('\fontsize{14}TIME?? (sec)')
 ylabel('\fontsize{14}VELOCITY (cm/s)')
 %ylabel('\fontsize{14}PRESSURE (mmHg)')
 
+%% Finding local minima and maxima 
+% Local minima on graph
+TFminima = islocalmin(y_new,'MinSeparation',0.11,'SamplePoints',x_new);
+plot(x_new,y_new,x_new(TFminima),y_new(TF),'r*');
+
+% Local maxima on graph
+TFmaxima = islocalmax(y_new);
+plot(x_new,y_new,x_new(TFmaxima),y_new(TFmaxima),'r*');
+
+% Finding values of local minima and maxima
+minIndexes = find(TFminima == 1);
+maxIndexes = find(TFmaxima == 1);
+minXVals = x_new(minIndexes);
+minYVals = y_new(minIndexes);
+maxXVals = x_new(maxIndexes);
+maxYVals = y_new(maxIndexes);
+
+% Writing to excel sheet 
 
 % %% Compare Plot to Image
 % figure
