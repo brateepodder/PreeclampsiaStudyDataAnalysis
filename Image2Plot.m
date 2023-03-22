@@ -107,7 +107,14 @@ minYVals = y_new(minIndexes);
 maxXVals = x_new(maxIndexes);
 maxYVals = y_new(maxIndexes);
 
-% Writing to excel sheet 
+% Writing to excel sheet
+filesheet = "US Data.xslx";
+maximumVals = ["Max X-Values", "Max Y-Values";
+                maxXVals', maxYVals'];
+minimumVals = ["Min X-Values", "Min Y-Values";
+                minXVals', minYVals;];
+writematrix(maximumVals,filename,'Sheet',1,'Range','A1');
+writematrix(minimumVals, filename, 'Sheet', 1, 'Range', 'D1');
 
 % %% Compare Plot to Image
 % figure
