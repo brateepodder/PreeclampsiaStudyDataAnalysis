@@ -12,7 +12,7 @@ function [x_new, y_new] = Image2Plot(path, image_name,image_type, x_min, x_max, 
 
 %% Example Inputs
 % % File name Information
-path = '/Users/bratee/Documents/git/Test plots/Test Plots';
+path = '/Users/bratee/Documents/git/Test plots/Test Plots/';
 image_name = 'CROPPED US';
 image_type = '.png';
 
@@ -33,7 +33,7 @@ Raw_File_and_Path = strcat(path, image_name, image_type);
 I = imread(Raw_File_and_Path);
 
 %% Convert to black and white and create black pixel mask
-BW = rgb2gray(I);
+BW = imcomplement(I);
 blackpixelsmask = BW<15;
 % Array for black pixels mask, where values will be 1 if the pixel is 
 % "black" (i.e. BW value is <15) and otherwise 0.
@@ -93,11 +93,11 @@ ylabel('\fontsize{14}VELOCITY (cm/s)')
 %% Finding local minima and maxima 
 % Local minima on graph
 TFminima = islocalmin(y_new,'MinSeparation',0.11,'SamplePoints',x_new);
-plot(x_new,y_new,x_new(TFminima),y_new(TF),'r*');
+plot(x_new,y_new,x_new(TFminima),y_new(TFminima),'r*');
 
 % Local maxima on graph
-TFmaxima = islocalmax(y_new);
-plot(x_new,y_new,x_new(TFmaxima),y_new(TFmaxima),'r*');
+TFmaxima = islocalmax(y_new,'MinSeparation',0.1,'SamplePoints',x_new);
+plot(x_new,y_new,x_new(TFmaxima),y_new(TFmaxima),'g*');
 
 % Finding values of local minima and maxima
 minIndexes = find(TFminima == 1);
@@ -108,11 +108,11 @@ maxXVals = x_new(maxIndexes);
 maxYVals = y_new(maxIndexes);
 
 % Writing to excel sheet
-filename = "US Data.xslx";
+filename = "US Data.xlsx";
 maximumVals = ["Max X-Values", "Max Y-Values";
-                maxXVals', maxYVals'];
+                maxXVals', maxYVals';];
 minimumVals = ["Min X-Values", "Min Y-Values";
-                minXVals', minYVals;];
+                minXVals', minYVals';];
 writematrix(maximumVals,filename,'Sheet',1,'Range','A1');
 writematrix(minimumVals, filename, 'Sheet', 1, 'Range', 'D1');
 
