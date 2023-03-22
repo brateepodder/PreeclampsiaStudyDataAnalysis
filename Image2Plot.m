@@ -108,7 +108,7 @@ maxXVals = x_new(maxIndexes);
 maxYVals = y_new(maxIndexes);
 
 % Writing to excel sheet
-filesheet = "US Data.xslx";
+filename = "US Data.xslx";
 maximumVals = ["Max X-Values", "Max Y-Values";
                 maxXVals', maxYVals'];
 minimumVals = ["Min X-Values", "Min Y-Values";
