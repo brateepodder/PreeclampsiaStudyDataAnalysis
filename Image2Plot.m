@@ -12,18 +12,18 @@ function [x_new, y_new] = Image2Plot(path, image_name,image_type, x_min, x_max, 
 
 %% Example Inputs
 % % File name Information
-% path = '/Users/juliawoodall/Dropbox (GaTech)/Documents/MATLAB/Test Plots/';
-% image_name = 'Reymond 2009 Fig 4A'
-% image_type = '.jpg'
+path = '/Users/bratee/Documents/git/Test plots/Test Plots';
+image_name = 'CROPPED US';
+image_type = '.png';
 
 % % Input axis bounds of image
-% x_min = 0; % Min Time [s]
-% x_max = 0.8; % Max Time [s]
-% y_min = -33; % Min Flow rate [mL/s]
-% y_max = 500; % Max Flow rate [mL/s]
+x_min = 0; % Min Time [s]
+x_max = 0.8; % Max Time [s]
+y_min = -33; % Min Flow rate [mL/s]
+y_max = 500; % Max Flow rate [mL/s]
 
 % % Desired dx for final plot data points
-% dx = (x_max-x_min)/500;
+dx = (x_max-x_min)/500;
 
 % Image2Plot('/Users/juliawoodall/Dropbox (GaTech)/Documents/MATLAB/Test Plots/', 'Reymond 2009 Fig 4A','.jpg', 0, 0.8, -0.3, 17, 0.5*10^-2)
 
