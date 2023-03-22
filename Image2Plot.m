@@ -75,6 +75,7 @@ y_extract = y_extract/height(blackpixelsmask)*(y_max-y_min) + y_min;
 % interpolate the plots values for y at prescribed x values (i.e.,  based 
 % on the extracted x and y data points (i.e., 'x_extract' and 'y_extract')
 
+%Try PCHIP, SPLINE and MAKIMA to see which one best fits
 x_new = x_min:dx:x_max;
 y_new = pchip(x_extract, y_extract, x_new);
 
