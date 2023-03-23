@@ -107,7 +107,10 @@ minYVals = y_new(minIndexes);
 maxXVals = x_new(maxIndexes);
 maxYVals = y_new(maxIndexes);
 
-% Writing to excel sheet
+%% Averaging plots
+%Finding where one plot ends and the other starts
+
+%% Writing to excel sheet
 filename = "US Data.xlsx";
 maximumVals = ["Max X-Values", "Max Y-Values";
                 maxXVals', maxYVals';];
