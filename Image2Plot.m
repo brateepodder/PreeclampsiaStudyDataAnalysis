@@ -12,7 +12,7 @@ function [x_new, y_new] = Image2Plot(path, image_name,image_type, x_min, x_max, 
 
 %% Example Inputs
 % % File name Information
-path = '/Users/bratee/Documents/git/Test plots/Test Plots/';
+path = '/Users/bratee/Documents/MATLAB/PreeclampsiaStudyDataAnalysis/Test plots/Test Plots/';
 image_name = 'CROPPED US';
 image_type = '.png';
 
