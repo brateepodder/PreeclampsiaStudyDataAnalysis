@@ -130,8 +130,8 @@ C_x = minXVals(C_y == minYVals);
 %C = ['Nadir of Notch X', 'Y'; C_x, C_y;];
 
 %Finding D: Peak of Notch 
-[D_value,D_index]=maxk(maxYVals, 2);
-D_y = D_value([1,1]);
+[D_value,D_index]=maxk(maxYVals, 2); %Find the minimum 
+D_y = min(D_value)
 D_x = maxXVals(D_index);
 
 %Finding B: End diastolic flow
