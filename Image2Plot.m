@@ -1,4 +1,4 @@
-function [x_new, y_new] = Image2Plot(path, image_name,image_type, x_min, x_max, y_min, y_max, dx)
+function [x_new, y_new] = Image2Plot(path, image_name,image_type, x_min, x_max, y_min, y_max, dx);
 %% Notes
 % Purpose: The purpose of this function is to convert an image of a plot
 % into its data points.
@@ -12,8 +12,8 @@ function [x_new, y_new] = Image2Plot(path, image_name,image_type, x_min, x_max, 
 
 %% Example Inputs
 % % File name Information
-path = '/Users/bratee/Documents/MATLAB/PreeclampsiaStudyDataAnalysis/Test plots/Test Plots/';
-image_name = 'CROPPED US';
+path = '/Users/bratee/Documents/MATLAB/PreeclampsiaStudyDataAnalysis/';
+image_name = 'CROPPED IMAGE 2';
 image_type = '.png';
 
 % % Input axis bounds of image
@@ -92,7 +92,7 @@ ylabel('\fontsize{14}VELOCITY (cm/s)')
 
 %% Finding local minima and maxima 
 % Local minima on graph
-TFminima = islocalmin(y_new,'MinSeparation',0.11,'SamplePoints',x_new);
+TFminima = islocalmin(y_new,'MinSeparation',0.01,'SamplePoints',x_new);
 plot(x_new,y_new,x_new(TFminima),y_new(TFminima),'r*');
 
 % Local maxima on graph
@@ -108,7 +108,17 @@ maxXVals = x_new(maxIndexes);
 maxYVals = y_new(maxIndexes);
 
 %% Averaging plots
-%Finding where one plot ends and the other starts
+%Peak of minimims = D
+% Separated by local maxima and last minima
+% Find when a minima occurs before a maxima, and cut off the plot according
+% to where the last minima occurs 
+TF_lastminima = islocalmin(y_new);
+TF_mostmaxima = islocalmax(y_new);
+plot(x_new,y_new,x_new(TF_lastminima),y_new(TF_lastminima),'r*');
+plot(x_new,y_new,x_new(TF_mostmaxima),y_new(TF_mostmaxima),'b*');
+% For loop through an array of mins and maxs
+
+
 
 %% Writing to excel sheet
 filename = "US Data.xlsx";
