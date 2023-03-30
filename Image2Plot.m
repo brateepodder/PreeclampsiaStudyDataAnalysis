@@ -118,30 +118,35 @@ plot(x_new,y_new,x_new(TF_lastminima),y_new(TF_lastminima),'r*');
 plot(x_new,y_new,x_new(TF_mostmaxima),y_new(TF_mostmaxima),'b*');
 % For loop through an array of mins and maxs
 
-%% Finding important points (A, B, C, D) 
+%% Finding important points (A, B, C, D) - Currently for only first waveform
 %Finding A: Peak Systolic Flow
-A_y = max(y_new);
-A_x = x_new(A_y == y_new);
-A = ['Peak Systolic Flow X', 'Y'; A_x, A_y];
+A_y = max(maxYVals);
+A_x = maxXVals(A_y == maxYVals);
+%A = ['Peak Systolic Flow X', 'Y'; A_x, A_y;];
 
 %Finding C: Nadir of Notch
-C_y = min(y_new);
-C_x = x_new(C_y == y_new);
-C = ['Nadir of Notch X', 'Y'; C_x, C_y];
+C_y = min(minYVals);
+C_x = minXVals(C_y == minYVals);
+%C = ['Nadir of Notch X', 'Y'; C_x, C_y;];
 
 %Finding D: Peak of Notch 
+[D_value,D_index]=maxk(maxYVals, 2);
+D_y = D_value([1,1]);
+D_x = maxXVals(D_index);
 
 %Finding B: End diastolic flow
-%B_x = 
-%B_ y = 
+B_x = minXVals(end);
+B_y = minYVals(end);
+%B = ['End of diastolic flow X', 'Y'; B_x, B_y;];
 
 %Finding M: Mean of flow
 
+
 %Finding Pulsatility Index
-pulsality_index = (A-B)/M;
+%pulsality_index = (A-B)/M;
 
 %Finding Notch Index
-notch_index = (D-C)/M;
+%notch_index = (D-C)/M;
 
 %% Writing to excel sheet
 filename = "US Data.xlsx";
@@ -151,7 +156,9 @@ minimumVals = ["Min X-Values", "Min Y-Values";
                 minXVals', minYVals';];
 writematrix(maximumVals,filename,'Sheet',1,'Range','A1');
 writematrix(minimumVals, filename, 'Sheet', 1, 'Range', 'D1');
-writematrix(A', filename, 'Sheet', 1, 'Range', 'G1');
+%writematrix(A', filename, 'Sheet', 1, 'Range', 'G1');
+%writematrix(B', filename, 'Sheet', 1, 'Range', 'G5');
+%writematrix(C', filename, 'Sheet', 1, 'Range', 'G9');
 
 % %% Compare Plot to Image
 % figure
