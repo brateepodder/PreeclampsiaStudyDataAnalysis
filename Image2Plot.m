@@ -13,7 +13,7 @@ function [x_new, y_new] = Image2Plot(path, image_name,image_type, x_min, x_max, 
 %% Example Inputs
 % % File name Information
 path = '/Users/bratee/Documents/MATLAB/PreeclampsiaStudyDataAnalysis/';
-image_name = 'CROPPED IMAGE 2';
+image_name = 'CROPPED IMAGE 4';
 image_type = '.png';
 
 % % Input axis bounds of image
@@ -118,7 +118,30 @@ plot(x_new,y_new,x_new(TF_lastminima),y_new(TF_lastminima),'r*');
 plot(x_new,y_new,x_new(TF_mostmaxima),y_new(TF_mostmaxima),'b*');
 % For loop through an array of mins and maxs
 
+%% Finding important points (A, B, C, D) 
+%Finding A: Peak Systolic Flow
+A_y = max(y_new);
+A_x = x_new(A_y == y_new);
+A = ['Peak Systolic Flow X', 'Y'; A_x, A_y];
 
+%Finding C: Nadir of Notch
+C_y = min(y_new);
+C_x = x_new(C_y == y_new);
+C = ['Nadir of Notch X', 'Y'; C_x, C_y];
+
+%Finding D: Peak of Notch 
+
+%Finding B: End diastolic flow
+%B_x = 
+%B_ y = 
+
+%Finding M: Mean of flow
+
+%Finding Pulsatility Index
+pulsality_index = (A-B)/M;
+
+%Finding Notch Index
+notch_index = (D-C)/M;
 
 %% Writing to excel sheet
 filename = "US Data.xlsx";
@@ -128,6 +151,7 @@ minimumVals = ["Min X-Values", "Min Y-Values";
                 minXVals', minYVals';];
 writematrix(maximumVals,filename,'Sheet',1,'Range','A1');
 writematrix(minimumVals, filename, 'Sheet', 1, 'Range', 'D1');
+writematrix(A', filename, 'Sheet', 1, 'Range', 'G1');
 
 % %% Compare Plot to Image
 % figure
