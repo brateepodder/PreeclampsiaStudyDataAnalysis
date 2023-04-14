@@ -12,13 +12,17 @@ function [x_new, y_new] = Image2Plot(path, image_name,image_type, x_min, x_max, 
 
 %% Example Inputs
 % % File name Information
-path = '/Users/bratee/Documents/MATLAB/PreeclampsiaStudyDataAnalysis/';
-image_name = 'CROPPED IMAGE 4';
+path = '/Users/bratee/Documents/MATLAB/PreeclampsiaStudyDataAnalysis/Test Plots/Test Plots/';
+image_name = 'CROPPED IMAGE';
 image_type = '.png';
+
+prompt = "Enter the Peak Systolic value:";
+peak_systolic = input(prompt);
 
 % % Input axis bounds of image
 x_min = 0; % Min Time [s]
 x_max = 0.8; % Max Time [s]
+x_pixel_length = x_max / 652; %x_max / length of full graph 
 y_min = -33; % Min Flow rate [mL/s]
 y_max = 500; % Max Flow rate [mL/s]
 
@@ -66,9 +70,10 @@ for i=1:W
     end       
 end
 
-% Scale values to reflect graphical bounds and minima
+% Scale values to reflect graphical bounds and minima (CHANGED TO REFLECT PEAK
+% SYSTOLIC VALUES)
 x_extract = x_extract/width(blackpixelsmask)*(x_max-x_min) + x_min;
-y_extract = y_extract/height(blackpixelsmask)*(y_max-y_min) + y_min;
+y_extract = y_extract/height(blackpixelsmask)*(y_max-y_min + y_min);
 
 %% Y Values for New X values
 % Uses the Piecewise Cubic Hermite Interpolating Polynomial (PCHIP)) to 
@@ -78,11 +83,18 @@ y_extract = y_extract/height(blackpixelsmask)*(y_max-y_min) + y_min;
 x_new = x_min:dx:x_max;
 y_new = pchip(x_extract, y_extract, x_new);
 
+%Re-scaling to reflect systolic values
+y_max = max(y_new); %Finds max of y-values
+scale_factor = peak_systolic / y_max; %Finds scale factor
+y_new = y_new * scale_factor;
+x_new = x_new * (width(blackpixelsmask)) * x_pixel_length;
+
+%Re-scaling to fit the actual
 %% Plot
 plot(x_new,y_new,'LineWidth',2)
 hold on
 title(strcat('\fontsize{18}', 'MATLAB Plot of US')) %' ',image_name)
-axis([x_min x_max y_min y_max]);
+axis([min(x_new) max(x_new) 0 peak_systolic + 3]);
 set(gca,'FontSize',10)
 set(gca, 'XTick', x_min: (x_max-x_min)/2: x_max)
 set(gca, 'YTick', y_min:(y_max-y_min)/6:y_max)
@@ -140,8 +152,8 @@ B_x = minXVals(end);
 B_y = minYVals(end);
 B = [B_x, B_y];
 
-%Finding M: Mean of flow
-M = mean(y_new);
+%Finding M: Mean of flow through trapezoidal integration
+M = trapz(x_new,y_new);
 
 %Finding Pulsatility Index
 pulsality_index = (A-B)/M;
