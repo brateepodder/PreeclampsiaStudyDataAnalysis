@@ -14,7 +14,7 @@ T = readtable(path);
 
 % Displays the data from excel file (first column x values, second column y
 % values)
-disp(T);
+%disp(T);
 
 % Extract x and y columns from the table
 x_data = T(:, 1).Variables; % Assuming x is in the first column
@@ -29,19 +29,19 @@ title('Pre-Ecclampsia Plot Detection'); % Replace with your actual plot title
 %% Finding local minima and maxima 
 % Local minima on graph
 TFminima = islocalmin(y_data,'MinSeparation',0.01,'SamplePoints',x_data);
-%plot(x_data,y_data,x_data(TFminima),y_data(TFminima),'g*');
+plot(x_data,y_data,x_data(TFminima),y_data(TFminima),'g*');
 
-% Local maxima on graph
-TFmaxima = islocalmax(y_data,'MinSeparation',0.1,'SamplePoints',x_data);
-%plot(x_data,y_data,x_data(TFmaxima),y_data(TFmaxima),'b*');
+% Full maxima of waveform (for finding peak systolic)
+FullMaxima = islocalmax(y_data,'MinSeparation',0.7,'SamplePoints',x_data);
+%plot(x_data,y_data,x_data(FullMaxima),y_data(FullMaxima),'b*');
 
 % Finding values of local minima and maxima
 minIndexes = find(TFminima == 1);
-maxIndexes = find(TFmaxima == 1);
+PeakSystolicIndexes = find(FullMaxima == 1);
 minXVals = x_data(minIndexes);
 minYVals = y_data(minIndexes);
-maxXVals = x_data(maxIndexes);
-maxYVals = y_data(maxIndexes);
+AXValues = x_data(PeakSystolicIndexes);
+AYValues = y_data(PeakSystolicIndexes);
 
 %% Averaging plots
 %Peak of minimims = D
@@ -50,34 +50,72 @@ maxYVals = y_data(maxIndexes);
 % to where the last minima occurs 
 TF_lastminima = islocalmin(y_data);
 TF_mostmaxima = islocalmax(y_data);
-plot(x_data,y_data,x_data(TF_lastminima),y_data(TF_lastminima),'g*');
-plot(x_data,y_data,x_data(TF_mostmaxima),y_data(TF_mostmaxima),'b*');
+%plot(x_data,y_data,x_data(TF_lastminima),y_data(TF_lastminima),'g*');
+%plot(x_data,y_data,x_data(TF_mostmaxima),y_data(TF_mostmaxima),'b*');
 % For loop through an array of mins and maxs
 
-%% Finding important points (A, B, C, D) - Currently for only first waveform
+%% Finding important points
 %A: Peak Systolic Flow - Global maximum of waveform
-A_y = max(maxYVals);
-A_x = maxXVals(A_y == maxYVals);
-A = [A_x, A_y];
+minVals = [minXVals, minYVals];
+disp(minVals);
+A = [AXValues, AYValues];
+disp(A);
 
 %C: Nadir of Notch - First significant dip after Peak Systolic Flow (A)
 C_y = min(minYVals);
 C_x = minXVals(C_y == minYVals);
 C = [C_x, C_y];
+disp(C);
+% indicesAfterPeakSystolic = find(minXVals > AXValues);
+% if ~isempty(indicesAfterPeakSystolic)
+%     % Get the index of the first minimum after the peak systolic x-value
+%     indexFirstMinAfterPeakSystolic = indicesAfterPeakSystolic(1);
+% 
+%     % Get the x-value of the first minimum after the peak systolic
+%     firstMinAfterPeakSystolicX = minXVals(indexFirstMinAfterPeakSystolic);
+% 
+%     % Display the result
+%     disp(['The first minimum after the peak systolic is at x = ' num2str(firstMinAfterPeakSystolicX)]);
+
+CXValues = [];
+CYValues = [];
+% Loop through each peak systolic x-value
+for i = 1:length(AXValues)
+    % Find the indices of the minima that come after the current peak systolic x-value
+    indicesAfterPeakSystolic = find(minXVals > AXValues(i));
+    disp(indicesAfterPeakSystolic(1));
+
+    % Check if there are any minima after the current peak systolic x-value
+    if ~isempty(indicesAfterPeakSystolic)
+        % Get the index of the first minimum after the current peak systolic x-value
+        indexFirstMinAfterPeakSystolic = indicesAfterPeakSystolic(1);
+        disp(indexFirstMinAfterPeakSystolic);
+
+        % Get the x-value of the first minimum after the current peak systolic x-value
+        CXValues = [CXValues, minXVals(indexFirstMinAfterPeakSystolic)];
+        CYValues = [CYValues, minYVals(indexFirstMinAfterPeakSystolic)];
+    end
+end
+C = [CXValues, CYValues];
+disp(C);
 
 %D: Peak of Notch - First significant max after Nadir of Notch (C)
 [D_value,D_index]=maxk(maxYVals, 2); %Find the minimum 
 D_y = min(D_value);
 D_x = max(maxXVals(D_index));
 D = [D_x, D_y];
+disp(D);
 
 %B: End Diastolic - Start of the pulse waveform + Minimum before each Peak Systolic (A)
 B_x = minXVals(end);
 B_y = minYVals(end);
 B = [B_x, B_y];
+B = [0, T(1)];
+disp(B);
 
 %Finding M: Mean of flow through trapezoidal integration
 M = trapz(x_data,y_data);
+plot
 
 %Finding Pulsatility Index
 pulsality_index = (A-B)/M;

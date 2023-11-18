@@ -108,7 +108,7 @@ TFminima = islocalmin(y_new,'MinSeparation',0.01,'SamplePoints',x_new);
 plot(x_new,y_new,x_new(TFminima),y_new(TFminima),'r*');
 
 % Local maxima on graph
-TFmaxima = islocalmax(y_new,'MinSeparation',0.1,'SamplePoints',x_new);
+TFmaxima = islocalmax(y_new,'MinSeparation',0.7,'SamplePoints',x_new);
 plot(x_new,y_new,x_new(TFmaxima),y_new(TFmaxima),'g*');
 
 % Finding values of local minima and maxima
@@ -126,8 +126,8 @@ maxYVals = y_new(maxIndexes);
 % to where the last minima occurs 
 TF_lastminima = islocalmin(y_new);
 TF_mostmaxima = islocalmax(y_new);
-plot(x_new,y_new,x_new(TF_lastminima),y_new(TF_lastminima),'r*');
-plot(x_new,y_new,x_new(TF_mostmaxima),y_new(TF_mostmaxima),'b*');
+%plot(x_new,y_new,x_new(TF_lastminima),y_new(TF_lastminima),'r*');
+%plot(x_new,y_new,x_new(TF_mostmaxima),y_new(TF_mostmaxima),'b*');
 % For loop through an array of mins and maxs
 
 %% Finding important points (A, B, C, D) - Currently for only first waveform
