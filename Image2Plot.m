@@ -12,8 +12,8 @@ function [x_new, y_new] = Image2Plot(path, image_name,image_type, x_min, x_max, 
 
 %% Example Inputs
 % % File name Information
-path = '/Users/bratee/Documents/MATLAB/PreeclampsiaStudyDataAnalysis/Test Plots/Test Plots/';
-image_name = 'CROPPED IMAGE';
+path = '/Users/bratee/Documents/PreeclampsiaStudyDataAnalysis/Test plots/';
+image_name = 'CROPPED US';
 image_type = '.png';
 
 prompt = "Enter the Peak Systolic value:";
@@ -161,18 +161,18 @@ pulsality_index = (A-B)/M;
 %Finding Notch Index
 notch_index = (D-C)/M;
 
-%% Writing to excel sheet
-filename = "US Data.xlsx";
-maximumVals = ["Max X-Values", "Max Y-Values";
-                maxXVals', maxYVals';];
-minimumVals = ["Min X-Values", "Min Y-Values";
-                minXVals', minYVals';];
-writematrix(maximumVals,filename,'Sheet',1,'Range','A1');
-writematrix(minimumVals, filename, 'Sheet', 1, 'Range', 'D1');
-writematrix(A, filename, 'Sheet', 1, 'Range', 'G1');
-writematrix(B, filename, 'Sheet', 1, 'Range', 'G2');
-writematrix(C, filename, 'Sheet', 1, 'Range', 'G3');
-writematrix(D, filename, 'Sheet', 1, 'Range', 'G4');
+% %% Writing to excel sheet
+% filename = "US Data.xlsx";
+% maximumVals = ["Max X-Values", "Max Y-Values";
+%                 maxXVals', maxYVals';];
+% minimumVals = ["Min X-Values", "Min Y-Values";
+%                 minXVals', minYVals';];
+% writematrix(maximumVals,filename,'Sheet',1,'Range','A1');
+% writematrix(minimumVals, filename, 'Sheet', 1, 'Range', 'D1');
+% writematrix(A, filename, 'Sheet', 1, 'Range', 'G1');
+% writematrix(B, filename, 'Sheet', 1, 'Range', 'G2');
+% writematrix(C, filename, 'Sheet', 1, 'Range', 'G3');
+% writematrix(D, filename, 'Sheet', 1, 'Range', 'G4');
 
 % %% Compare Plot to Image
 % figure
