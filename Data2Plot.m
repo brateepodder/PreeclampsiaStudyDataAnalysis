@@ -62,21 +62,6 @@ A = [AXValues, AYValues];
 disp(A);
 
 %C: Nadir of Notch - First significant dip after Peak Systolic Flow (A)
-C_y = min(minYVals);
-C_x = minXVals(C_y == minYVals);
-C = [C_x, C_y];
-disp(C);
-% indicesAfterPeakSystolic = find(minXVals > AXValues);
-% if ~isempty(indicesAfterPeakSystolic)
-%     % Get the index of the first minimum after the peak systolic x-value
-%     indexFirstMinAfterPeakSystolic = indicesAfterPeakSystolic(1);
-% 
-%     % Get the x-value of the first minimum after the peak systolic
-%     firstMinAfterPeakSystolicX = minXVals(indexFirstMinAfterPeakSystolic);
-% 
-%     % Display the result
-%     disp(['The first minimum after the peak systolic is at x = ' num2str(firstMinAfterPeakSystolicX)]);
-
 CXValues = [];
 CYValues = [];
 % Loop through each peak systolic x-value
