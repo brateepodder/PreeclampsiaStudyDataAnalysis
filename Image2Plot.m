@@ -135,22 +135,26 @@ plot(x_new,y_new,x_new(TF_mostmaxima),y_new(TF_mostmaxima),'b*');
 A_y = max(maxYVals);
 A_x = maxXVals(A_y == maxYVals);
 A = [A_x, A_y];
+disp(A);
 
 %Finding C: Nadir of Notch
 C_y = min(minYVals);
 C_x = minXVals(C_y == minYVals);
 C = [C_x, C_y];
+disp(C);
 
 %Finding D: Peak of Notch 
 [D_value,D_index]=maxk(maxYVals, 2); %Find the minimum 
 D_y = min(D_value);
 D_x = max(maxXVals(D_index));
 D = [D_x, D_y];
+disp(D);
 
 %Finding B: End diastolic flow
 B_x = minXVals(end);
 B_y = minYVals(end);
 B = [B_x, B_y];
+disp(B);
 
 %Finding M: Mean of flow through trapezoidal integration
 M = trapz(x_new,y_new);
