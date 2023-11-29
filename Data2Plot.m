@@ -7,7 +7,7 @@ function [outputArg1,outputArg2] = untitled2(path)
 
 %% Paths and argument assignments
 % Path of the excel file - remove if not needed
-path = '/Users/bratee/Documents/PreeclampsiaStudyDataAnalysis/Data for Waveform Analysis/TH-0002-SMT-3-LUA_V_Cycle3.csv';
+path = '/Users/bratee/Documents/PreeclampsiaStudyDataAnalysis/Data for Waveform Analysis/Shape Data.xlsx';
 
 % Reading values from excel file 
 % You can change this to equal the table with the x and y values 
@@ -102,7 +102,7 @@ B = [B_x, B_y];
 %Loops through peak systolic values
 %Finds the minimum that occurs right before the peak systolic 
 if length(A_x) > 1
-    for i = 2:length(AXValues) 
+    for i = 2:length(A_x) 
         indicesBeforePeakSystolic = find(min_x < A_x(i));
         
         if ~isempty(indicesBeforePeakSystolic)
