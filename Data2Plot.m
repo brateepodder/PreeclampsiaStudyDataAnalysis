@@ -45,6 +45,7 @@ min_x = x_data(minIndexes);
 min_y = y_data(minIndexes);
 max_x = x_data(TFmaxima);
 max_y = y_data(TFmaxima);
+disp(min_y);
 
 % Finding A through highest maximas
 A_x = x_data(PeakSystolicIndexes);
