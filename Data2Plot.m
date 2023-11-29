@@ -10,13 +10,14 @@ function [outputArg1,outputArg2] = untitled2(path)
 path = '/Users/bratee/Documents/PreeclampsiaStudyDataAnalysis/Data for Waveform Analysis/TH-0002-SMT-3-LUA_V_Cycle3.csv';
 
 % Reading values from excel file 
+% You can change this to equal the table with the x and y values 
 T = readtable(path);
 
 % Displays the data from excel file (first column x values, second column y
 % values)
 %disp(T);
 
-% Extract x and y columns from the table
+% Extract x and y columns from the table T
 x_data = T(:, 1).Variables; % Assuming x is in the first column
 y_data = T(:, 2).Variables; % Assuming y is in the second column
 
@@ -38,10 +39,10 @@ FullMaxima = islocalmax(y_data,'MinSeparation',0.7,'SamplePoints',x_data);
 % Finding values of local minima and maxima
 minIndexes = find(TFminima == 1);
 PeakSystolicIndexes = find(FullMaxima == 1);
-minXVals = x_data(minIndexes);
-minYVals = y_data(minIndexes);
-AXValues = x_data(PeakSystolicIndexes);
-AYValues = y_data(PeakSystolicIndexes);
+min_x = x_data(minIndexes);
+min_y = y_data(minIndexes);
+A_x = x_data(PeakSystolicIndexes);
+A_y = y_data(PeakSystolicIndexes);
 
 %% Averaging plots
 %Peak of minimims = D
@@ -56,47 +57,59 @@ TF_mostmaxima = islocalmax(y_data);
 
 %% Finding important points
 %A: Peak Systolic Flow - Global maximum of waveform
-minVals = [minXVals, minYVals];
+minVals = [min_x, min_y];
 disp(minVals);
-A = [AXValues, AYValues];
+A = [A_x, A_y];
 disp(A);
 
 %C: Nadir of Notch - First significant dip after Peak Systolic Flow (A)
-CXValues = [];
-CYValues = [];
+C_x = [];
+C_y = [];
 % Loop through each peak systolic x-value
-for i = 1:length(AXValues)
+for i = 1:length(A_x)
     % Find the indices of the minima that come after the current peak systolic x-value
-    indicesAfterPeakSystolic = find(minXVals > AXValues(i));
-    disp(indicesAfterPeakSystolic(1));
+    indicesAfterPeakSystolic = find(min_x > A_x(i));
 
     % Check if there are any minima after the current peak systolic x-value
     if ~isempty(indicesAfterPeakSystolic)
         % Get the index of the first minimum after the current peak systolic x-value
         indexFirstMinAfterPeakSystolic = indicesAfterPeakSystolic(1);
-        disp(indexFirstMinAfterPeakSystolic);
 
         % Get the x-value of the first minimum after the current peak systolic x-value
-        CXValues = [CXValues, minXVals(indexFirstMinAfterPeakSystolic)];
-        CYValues = [CYValues, minYVals(indexFirstMinAfterPeakSystolic)];
+        C_x = [C_x, min_x(indexFirstMinAfterPeakSystolic)];
+        C_y = [C_y, min_y(indexFirstMinAfterPeakSystolic)];
     end
 end
-C = [CXValues, CYValues];
+C = [C_x, C_y];
 disp(C);
 
 %D: Peak of Notch - First significant max after Nadir of Notch (C)
-[D_value,D_index]=maxk(maxYVals, 2); %Find the minimum 
-D_y = min(D_value);
-D_x = max(maxXVals(D_index));
-D = [D_x, D_y];
-disp(D);
+% [D_value,D_index]=maxk(maxYVals, 2); 
+% D_y = min(D_value);
+% D_x = max(maxXVals(D_index));
+% D = [D_x, D_y];
+% disp(D);
 
 %B: End Diastolic - Start of the pulse waveform + Minimum before each Peak Systolic (A)
-B_x = minXVals(end);
-B_y = minYVals(end);
+B_x = 0;
+B_y = T{1,2};
 B = [B_x, B_y];
-B = [0, T(1)];
+
+%Loops through peak systolic values
+%Finds the minimum that occurs right before the peak systolic 
+if length(A_x) > 1
+    for i = 2:length(AXValues) 
+        indicesBeforePeakSystolic = find(min_x < A_x(i));
+        
+        if ~isempty(indicesBeforePeakSystolic)
+            indexBeforePeakSystolic = indicesBeforePeakSystolic(end);
+            B_x = [B_x, min_x(indexBeforePeakSystolic)];
+            B_y = [B_y, min_y(indexBeforePeakSystolic)];
+        end
+    end
+end
 disp(B);
+
 
 %Finding M: Mean of flow through trapezoidal integration
 M = trapz(x_data,y_data);
