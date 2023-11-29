@@ -38,25 +38,17 @@ FullMaxima = islocalmax(y_data,'MinSeparation',0.7,'SamplePoints',x_data);
 % Finding local maximas of individual waveforms
 TFmaxima = islocalmax(y_data, 'MinSeparation',0.01, 'SamplePoints',x_data);
 
-% Finding values of local minima and maxima
+% Finding values of local minima and maxima, assigning to variables
 minIndexes = find(TFminima == 1);
 PeakSystolicIndexes = find(FullMaxima == 1);
 min_x = x_data(minIndexes);
 min_y = y_data(minIndexes);
 max_x = x_data(TFmaxima);
 max_y = y_data(TFmaxima);
+
+% Finding A through highest maximas
 A_x = x_data(PeakSystolicIndexes);
 A_y = y_data(PeakSystolicIndexes);
-
-%% Averaging plots
-%Peak of minimims = D
-% Separated by local maxima and last minima
-% Find when a minima occurs before a maxima, and cut off the plot according
-% to where the last minima occurs 
-TF_lastminima = islocalmin(y_data);
-TF_mostmaxima = islocalmax(y_data);
-%plot(x_data,y_data,x_data(TF_lastminima),y_data(TF_lastminima),'g*');
-%plot(x_data,y_data,x_data(TF_mostmaxima),y_data(TF_mostmaxima),'b*');
 
 %% Finding important points
 %A: Peak Systolic Flow - Global maximum of waveform
@@ -121,10 +113,10 @@ if length(A_x) > 1
     end
 end
 
-fprintf('A = [%f, %f]\n', A);
-fprintf('B = [%f, %f]\n', B);
-fprintf('C = [%f, %f]\n', C);
-fprintf('D = [%f, %f]\n', D);
+fprintf('Peak Systolic Flow | A = [%f, %f]\n', A);
+fprintf('End Diastolic Flow | B = [%f, %f]\n', B);
+fprintf('Nadir of Notch | C = [%f, %f]\n', C);
+fprintf('Peak of Notch | D = [%f, %f]\n', D);
 
 % Finding M: Mean of flow through average of y values
 M = mean(y_data);
