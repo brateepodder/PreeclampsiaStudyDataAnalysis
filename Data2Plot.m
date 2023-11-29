@@ -32,15 +32,20 @@ title('Pre-Ecclampsia Plot Detection'); % Replace with your actual plot title
 TFminima = islocalmin(y_data,'MinSeparation',0.01,'SamplePoints',x_data);
 plot(x_data,y_data,x_data(TFminima),y_data(TFminima),'g*');
 
-% Full maxima of waveform (for finding peak systolic)
+% Finding global maxima of individual waveforms (for finding peak systolic)
 FullMaxima = islocalmax(y_data,'MinSeparation',0.7,'SamplePoints',x_data);
 %plot(x_data,y_data,x_data(FullMaxima),y_data(FullMaxima),'b*');
+
+% Finding local maximas of individual waveforms
+TFmaxima = islocalmax(y_data, 'MinSeparation',0.01, 'SamplePoints',x_data);
 
 % Finding values of local minima and maxima
 minIndexes = find(TFminima == 1);
 PeakSystolicIndexes = find(FullMaxima == 1);
 min_x = x_data(minIndexes);
 min_y = y_data(minIndexes);
+max_x = x_data(TFmaxima);
+max_y = y_data(TFmaxima);
 A_x = x_data(PeakSystolicIndexes);
 A_y = y_data(PeakSystolicIndexes);
 
@@ -84,6 +89,23 @@ C = [C_x, C_y];
 disp(C);
 
 %D: Peak of Notch - First significant max after Nadir of Notch (C)
+D_x = [];
+D_y = [];
+
+% Loop through each Nadir of Notch Value 
+% Find the closest max value to each nadir of notch value
+for i = 1:length(C_x)
+    indicesAfterNotch = find(max_x > C_x(i));
+
+    if ~isempty(indicesAfterNotch)
+        indexAfterNotch = indicesAfterNotch(1);
+        D_x = [D_x, max_x(indexAfterNotch)];
+        D_y = [D_y, max_y(indexAfterNotch)];
+    end
+end
+
+D = [D_x, D_y];
+disp(D);
 % [D_value,D_index]=maxk(maxYVals, 2); 
 % D_y = min(D_value);
 % D_x = max(maxXVals(D_index));
