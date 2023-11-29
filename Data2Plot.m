@@ -126,14 +126,40 @@ fprintf('B = [%f, %f]\n', B);
 fprintf('C = [%f, %f]\n', C);
 fprintf('D = [%f, %f]\n', D);
 
-%Finding M: Mean of flow through trapezoidal integration
+% Finding M: Mean of flow through average of y values
 M = mean(y_data);
 fprintf('Mean/M = %f\n', M);
 
-%Finding Pulsatility Index
-pulsality_index = (A-B)/M;
+fprintf('\n');
 
-%Finding Notch Index
-notch_index = (D-C)/M;
+% Finding Every Pulsatility Index (if more than 1) 
+if length(A_y) > 1
+    fprintf('Pulsality Index(es):\n')
+    for i = 1:length(A_y)
+        pulse = (A_y(i) - B_y(i)) / M;
+        fprintf('%i) Pulsatility: %f\n', i, pulse);
+    end
+end
+
+% Finding Average Pulsatility Index
+A_avg = mean(A_y);
+B_avg = mean(B_y);
+avg_pulse = (A_avg - B_avg)/M;
+fprintf('Average Pulsatility: %f\n', avg_pulse);
+
+% Finding Every Notch Index (if more than 1) 
+if length(C_y) > 1
+    fprintf('Notch Index(es):\n')
+    for i = 1:length(C_y)
+        notch = (D_y(i) - C_y(i)) / M;
+        fprintf('%i) Notch: %f\n', i, notch);
+    end
+end
+
+% Finding Average Notch Index
+C_avg = mean(C_y);
+D_avg = mean(D_y);
+avg_notch = (D_avg - C_avg)/M;
+fprintf('Average Notch Index: %f\n', avg_notch);
 
 end
