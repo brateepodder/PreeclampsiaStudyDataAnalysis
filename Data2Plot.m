@@ -127,8 +127,8 @@ fprintf('C = [%f, %f]\n', C);
 fprintf('D = [%f, %f]\n', D);
 
 %Finding M: Mean of flow through trapezoidal integration
-M = trapz(x_data,y_data);
-plot
+M = mean(y_data);
+fprintf('Mean/M = %f\n', M);
 
 %Finding Pulsatility Index
 pulsality_index = (A-B)/M;
