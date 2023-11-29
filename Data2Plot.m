@@ -15,7 +15,6 @@ T = readtable(path);
 
 % Displays the data from excel file (first column x values, second column y
 % values)
-%disp(T);
 
 % Extract x and y columns from the table T
 x_data = T(:, 1).Variables; % Assuming x is in the first column
@@ -30,7 +29,7 @@ title('Pre-Ecclampsia Plot Detection'); % Replace with your actual plot title
 %% Finding local minima and maxima 
 % Local minima on graph
 TFminima = islocalmin(y_data,'MinSeparation',0.01,'SamplePoints',x_data);
-plot(x_data,y_data,x_data(TFminima),y_data(TFminima),'g*');
+%plot(x_data,y_data,x_data(TFminima),y_data(TFminima),'g*');
 
 % Finding global maxima of individual waveforms (for finding peak systolic)
 FullMaxima = islocalmax(y_data,'MinSeparation',0.7,'SamplePoints',x_data);
@@ -58,14 +57,11 @@ TF_lastminima = islocalmin(y_data);
 TF_mostmaxima = islocalmax(y_data);
 %plot(x_data,y_data,x_data(TF_lastminima),y_data(TF_lastminima),'g*');
 %plot(x_data,y_data,x_data(TF_mostmaxima),y_data(TF_mostmaxima),'b*');
-% For loop through an array of mins and maxs
 
 %% Finding important points
 %A: Peak Systolic Flow - Global maximum of waveform
 minVals = [min_x, min_y];
-disp(minVals);
 A = [A_x, A_y];
-disp(A);
 
 %C: Nadir of Notch - First significant dip after Peak Systolic Flow (A)
 C_x = [];
@@ -85,8 +81,8 @@ for i = 1:length(A_x)
         C_y = [C_y, min_y(indexFirstMinAfterPeakSystolic)];
     end
 end
+
 C = [C_x, C_y];
-disp(C);
 
 %D: Peak of Notch - First significant max after Nadir of Notch (C)
 D_x = [];
@@ -105,12 +101,6 @@ for i = 1:length(C_x)
 end
 
 D = [D_x, D_y];
-disp(D);
-% [D_value,D_index]=maxk(maxYVals, 2); 
-% D_y = min(D_value);
-% D_x = max(maxXVals(D_index));
-% D = [D_x, D_y];
-% disp(D);
 
 %B: End Diastolic - Start of the pulse waveform + Minimum before each Peak Systolic (A)
 B_x = 0;
@@ -130,8 +120,11 @@ if length(A_x) > 1
         end
     end
 end
-disp(B);
 
+fprintf('A = [%f, %f]\n', A);
+fprintf('B = [%f, %f]\n', B);
+fprintf('C = [%f, %f]\n', C);
+fprintf('D = [%f, %f]\n', D);
 
 %Finding M: Mean of flow through trapezoidal integration
 M = trapz(x_data,y_data);
